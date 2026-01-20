@@ -1,0 +1,187 @@
+:root { --primary: #2c3e50; --green: #27ae60; --red: #c0392b; --bg: #f4f7f6; }
+body { font-family: 'Segoe UI', sans-serif; background: var(--bg); padding: 20px; color: #333; }
+.container { max-width: 900px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+
+/* Header & 按鈕區 */
+header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+.btn-main { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-size: 0.9em; transition: 0.2s; }
+.btn-main:hover { background: #34495e; }
+.btn-outline { background: transparent; border: 1px solid #7f8c8d; color: #7f8c8d; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+
+/* 儀表板 */
+.dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px; }
+.card { padding: 15px; border-radius: 8px; color: white; text-align: center; }
+.income-bg { background: var(--green); } .expense-bg { background: var(--red); } .balance-bg { background: var(--primary); }
+.card p { font-size: 1.5em; font-weight: bold; margin: 5px 0 0; }
+
+/* 輸入區塊 */
+.input-section { background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ddd; }
+.hidden { display: none !important; }
+
+.form-row { display: flex; gap: 10px; margin-bottom: 10px; }
+input, select, button.add-btn { padding: 10px; border: 1px solid #ccc; border-radius: 5px; flex: 1; }
+button.add-btn { background: var(--primary); color: white; flex: 0 0 100px; cursor: pointer; font-weight: bold; }
+
+/* 列表與報表 */
+.tabs { display: flex; border-bottom: 1px solid #ddd; margin-bottom: 15px; }
+.tab { padding: 10px 20px; cursor: pointer; opacity: 0.6; }
+.tab.active { border-bottom: 3px solid var(--primary); opacity: 1; font-weight: bold; }
+
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+.text-red { color: var(--red); font-weight: bold; }
+.text-green { color: var(--green); font-weight: bold; }
+
+/* 刪除按鈕 */
+.del-btn { color: #e74c3c; background: none; border: none; cursor: pointer; font-size: 1.5em; font-weight: bold; padding: 0 10px; }
+.del-btn:hover { background-color: #ffebeb; border-radius: 50%; }
+
+/* 報表樣式 */
+.report-card { border: 1px solid #ddd; border-radius: 8px; margin-bottom: 15px; overflow: hidden; }
+.report-head { background: #eee; padding: 10px 15px; display: flex; justify-content: space-between; font-weight: bold; }
+.report-body { padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;}
+
+/* 權限控制：預設隱藏操作欄位，有 admin-mode 才顯示 */
+.action-col { display: none; }
+body.admin-mode .action-col { display: table-cell; }
+
+/* =========================================
+   新功能樣式：Toast 通知 & Modal 彈窗
+   ========================================= */
+
+/* Toast 容器 */
+#toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+.toast { padding: 12px 24px; border-radius: 50px; color: white; font-size: 0.95em; box-shadow: 0 4px 12px rgba(0,0,0,0.15); animation: slideIn 0.3s ease-out; display: flex; align-items: center; gap: 8px; }
+.toast.success { background-color: #27ae60; }
+.toast.error { background-color: #e74c3c; }
+@keyframes slideIn { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+/* Login Modal 遮罩 */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(3px); z-index: 1000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: 0.3s; }
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+/* Modal 內容區 */
+.modal-content { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 350px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); transform: scale(0.9); transition: 0.3s; }
+.modal-overlay.active .modal-content { transform: scale(1); }
+.modal-title { font-size: 1.5em; font-weight: bold; margin-bottom: 20px; text-align: center; color: var(--primary); }
+.input-group { margin-bottom: 15px; }
+.input-group input { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 6px; }
+.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+.btn-full { flex: 1; padding: 10px; border-radius: 6px; cursor: pointer; border: none; font-weight: bold; }
+.btn-confirm { background: var(--primary); color: white; }
+.btn-cancel { background: #eee; color: #666; }
+
+/* ... 原本的 CSS ... */
+
+/* 新增：危險操作按鈕 (紅色) */
+.btn-danger {
+    background: var(--red);
+    color: white;
+}
+.btn-danger:hover {
+    background: #a93226; /* 深紅色 */
+}
+
+/* ... (保留原本所有的 CSS) ... */
+
+/* --- 新增樣式 --- */
+
+/* 列表中的連結按鈕 (藍色) */
+.btn-link {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: 0.2s;
+}
+.btn-link:hover {
+    background-color: #2980b9;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* 預覽視窗圖片 */
+.preview-img {
+    max-width: 100%;
+    max-height: 400px; /* 限制最大高度以免視窗太長 */
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* 預覽視窗文字提示 (當連結不是圖片時) */
+.preview-placeholder {
+    padding: 20px;
+    color: #7f8c8d;
+    font-size: 1.1em;
+}
+
+
+/* =========================================
+   📱 RWD 手機版自適應設定
+   ========================================= */
+@media screen and (max-width: 768px) {
+
+    /* --- 1. 全局版面調整 --- */
+    body { padding: 10px; }
+    .container { padding: 15px; width: 100%; box-sizing: border-box; }
+
+    /* Header 垂直排列 */
+    header { flex-direction: column; gap: 15px; text-align: center; }
+    
+    /* 儀表板變單欄 */
+    .dashboard { grid-template-columns: 1fr; gap: 10px; }
+    
+    /* 輸入表單垂直排列 */
+    .form-row { flex-direction: column; gap: 12px; }
+    input, select, button.add-btn { width: 100%; box-sizing: border-box; }
+    button.add-btn { margin-top: 5px; }
+
+    /* --- 2. 表格核心優化 (關鍵在這裡) --- */
+    table {
+        width: 100%;
+        table-layout: auto; /* 自動分配寬度 */
+        display: table;
+    }
+
+    /* 使用 nth-child 強制隱藏手機上不需要的欄位 
+       欄位順序：1.日期 2.類別 3.項目 4.數量 5.金額 6.連結 7.操作
+    */
+    
+    /* 隱藏：2(類別), 4(數量), 6(連結), 7(操作) */
+    th:nth-child(2), td:nth-child(2),
+    th:nth-child(4), td:nth-child(4),
+    th:nth-child(6), td:nth-child(6),
+    th:nth-child(7), td:nth-child(7) {
+        display: none !important;
+    }
+
+    /* --- 3. 留下來的欄位美化 (日期、項目、金額) --- */
+    th, td {
+        font-size: 14px;
+        padding: 10px 5px;
+    }
+
+    /* 第1欄：日期 (稍微小一點) */
+    th:first-child, td:first-child {
+        width: 25%;
+        font-size: 13px;
+        color: #666;
+    }
+
+    /* 第3欄：項目 (主要內容，給最大空間) */
+    th:nth-child(3), td:nth-child(3) {
+        width: 45%;
+        font-weight: bold;
+    }
+
+    /* 第5欄：金額 (靠右) */
+    th:nth-child(5), td:nth-child(5) {
+        width: 30%;
+        text-align: right;
+        padding-right: 5px;
+        white-space: nowrap;
+    }
+}
